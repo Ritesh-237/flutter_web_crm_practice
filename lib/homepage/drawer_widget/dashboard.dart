@@ -7,8 +7,8 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final isWeb = screenWidth > 600;
+    // final screenWidth = MediaQuery.of(context).size.width;
+    // final isWeb = screenWidth > 600;
 
     return Material(
       elevation: 6,
