@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:practice_app/theme/theme_extension.dart';
+import 'package:practice_app/utils/extensions.dart';
 
 class LeadScreen extends StatelessWidget {
   const LeadScreen({super.key});
@@ -306,7 +306,7 @@ class _AddLeadDialogState extends State<AddLeadDialog> {
       backgroundColor: Colors.white,
       insetPadding: const EdgeInsets.all(16),
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.8,
+        width: context.media.width * 0.8,
         padding: const EdgeInsets.all(16),
         child: SingleChildScrollView(
           child: Form(

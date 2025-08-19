@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:practice_app/theme/theme_extension.dart';
+import 'package:practice_app/utils/extensions.dart';
 
 class FinalCandidateScreen extends StatelessWidget {
   const FinalCandidateScreen({super.key});
@@ -288,8 +288,8 @@ class SummaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.20,
-      width: MediaQuery.of(context).size.width * 0.20,
+      height: context.media.height * 0.20,
+      width: context.media.width * 0.20,
       decoration: BoxDecoration(
         color: color.withOpacity(0.9),
         borderRadius: BorderRadius.circular(16),

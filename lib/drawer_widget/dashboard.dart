@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:practice_app/homepage/drawer_widget/final_candidate.dart';
-import 'package:practice_app/theme/theme_extension.dart';
+import 'package:practice_app/drawer_widget/final_candidate.dart';
+import 'package:practice_app/utils/extensions.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // final screenWidth = MediaQuery.of(context).size.width;
+    // final screenWidth =  context.media.width;
     // final isWeb = screenWidth > 600;
 
     return Material(
@@ -19,12 +19,12 @@ class DashboardScreen extends StatelessWidget {
           color: context.themeRef.colorScheme.onPrimary,
           borderRadius: BorderRadius.circular(10),
         ),
-        height: MediaQuery.of(context).size.height,
+        height: context.media.height,
         child: SingleChildScrollView(
           child: Column(
             children: [
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.15,
+                height: context.media.height * 0.15,
                 child: Wrap(
                   spacing: 16,
                   runSpacing: 16,

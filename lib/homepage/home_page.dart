@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:practice_app/homepage/drawer_widget/dashboard.dart';
-import 'package:practice_app/homepage/drawer_widget/final_candidate.dart';
-import 'package:practice_app/homepage/drawer_widget/leads.dart';
+import 'package:practice_app/drawer_widget/dashboard.dart';
+import 'package:practice_app/drawer_widget/final_candidate.dart';
+import 'package:practice_app/drawer_widget/leads.dart';
 import 'package:practice_app/test.dart';
+import 'package:practice_app/utils/extensions.dart';
 import 'package:practice_app/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
+
+import '../auth/logout_timer_provider.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -29,11 +32,18 @@ class _MyHomePageState extends State<MyHomePage> {
     "TASKS",
     "DISPUTE",
   ];
+  String _format(Duration d) {
+    String twoDigits(int n) => n.toString().padLeft(2, "0");
+    final hours = twoDigits(d.inHours);
+    final minutes = twoDigits(d.inMinutes.remainder(60));
+    final seconds = twoDigits(d.inSeconds.remainder(60));
+    return "$hours:$minutes:$seconds";
+  }
 
   @override
   Widget build(BuildContext context) {
-    ColorScheme myColors = Theme.of(context).colorScheme;
-    final screenWidth = MediaQuery.of(context).size.width;
+    ColorScheme myColors = context.themeRef.colorScheme;
+    final screenWidth = context.media.width;
     final isWeb = screenWidth > 600;
     final isDark = Provider.of<ThemeProvider>(context).isDarkMode(context);
 
@@ -71,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 )
                 : SizedBox(
                   width: screenWidth * 0.50,
-                  height: MediaQuery.of(context).size.height * 0.045,
+                  height: context.media.height * 0.045,
                   child: SearchBar(
                     trailing: [Icon(Icons.search)],
                     hintText: "Search lead",
@@ -79,6 +89,19 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
         actions: [
+          Center(
+            child: Consumer<LogoutTimerProvider>(
+              builder: (context, countdown, child) {
+                return Text(
+                  "Session ends in: ${_format(countdown.remaining)}",
+                  style: const TextStyle(
+                    // fontSize: 20,
+                    // fontWeight: FontWeight.bold,
+                  ),
+                );
+              },
+            ),
+          ),
           if (isWeb)
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
@@ -122,7 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
             child: Container(
               width: screenWidth * 0.10,
-              height: MediaQuery.of(context).size.height,
+              height: context.media.height,
               color: const Color.fromARGB(255, 233, 241, 255),
               child: ListView.builder(
                 scrollDirection: Axis.vertical,
