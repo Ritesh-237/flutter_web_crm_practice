@@ -7,11 +7,13 @@ import 'package:practice_app/utils/shared_preferences.dart';
 import 'package:provider/provider.dart';
 
 import 'auth/logout_timer_provider.dart';
+import 'auth/user_manager.dart';
 import 'theme/text.dart';
 import 'theme/theme.dart';
 
 void main() async {
   await LocalStoragePref().initPrefBox();
+  await UserManager().init();
   configLoading();
   runApp(
     MultiProvider(
@@ -67,6 +69,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: MaterialTheme(textTheme).lightMediumContrast(),
+      // darkTheme: MaterialTheme(textTheme).lightMediumContrast(),
       darkTheme: MaterialTheme(textTheme).darkMediumContrast(),
       themeMode: themeProvider.themeMode,
       initialRoute: '/',

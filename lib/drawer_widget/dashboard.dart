@@ -7,100 +7,63 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final screenWidth =  context.media.width;
-    // final isWeb = screenWidth > 600;
+    final screenWidth = context.media.width;
+    final isWeb = screenWidth > 600;
+    ColorScheme myColors = context.themeRef.colorScheme;
 
-    return Material(
-      elevation: 6,
-      borderRadius: BorderRadius.circular(10),
+    return Container(
+      padding: EdgeInsets.all(10),
+      margin: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: myColors.surfaceContainerLow,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      height: context.media.height,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: context.media.height * 0.15,
+              child: Wrap(
+                spacing: 16,
+                runSpacing: 16,
+                children: [
+                  SummaryCard(
+                    title: "Available Candidates",
+                    count: "20",
+                    percent: "+ 1 %",
+                    color: myColors.primaryContainer,
+                  ),
 
-      child: Container(
-        decoration: BoxDecoration(
-          color: context.themeRef.colorScheme.onPrimary,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        height: context.media.height,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: context.media.height * 0.15,
-                child: Wrap(
-                  spacing: 16,
-                  runSpacing: 16,
-                  children: [
-                    SummaryCard(
-                      title: "Final Candidate",
-                      count: "0",
-                      percent: "+ 0 %",
-                      color: Colors.deepPurple,
-                    ),
+                  SummaryCard(
+                    title: "Working Candidates",
+                    count: "0",
+                    percent: "+ 0 %",
+                    color: myColors.tertiary,
+                  ),
+                  SummaryCard(
+                    title: "Job Left",
+                    count: "0",
+                    percent: "+ 0 %",
+                    color: myColors.secondaryContainer,
+                  ),
 
-                    SummaryCard(
-                      title: "Black List",
-                      count: "0",
-                      percent: "+ 0 %",
-                      color: Colors.red,
-                    ),
-                    SummaryCard(
-                      title: "Job Left",
-                      count: "0",
-                      percent: "+ 0 %",
-                      color: Colors.blue,
-                    ),
-                    SummaryCard(
-                      title: "On Job",
-                      count: "0",
-                      percent: "+ 0 %",
-                      color: Colors.green,
-                    ),
-                    SummaryCard(
-                      title: "On Job",
-                      count: "0",
-                      percent: "+ 0 %",
-                      color: Colors.blueAccent,
-                    ),
-                    SummaryCard(
-                      title: "On Job",
-                      count: "0",
-                      percent: "+ 0 %",
-                      color: Colors.orangeAccent,
-                    ),
-                  ],
-                ),
+                  SummaryCard(
+                    title: "My Insentives",
+                    count: "₹ 1000",
+                    percent: "+ 0 %",
+                    color: myColors.secondary,
+                  ),
+                  SummaryCard(
+                    title: "Disputes",
+                    count: "0",
+                    percent: "+ 0 %",
+                    color: myColors.error,
+                  ),
+                ],
               ),
-              SizedBox(height: 250),
-
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      height: 100,
-                      width: 400,
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        border: Border.all(
-                          color: const Color.fromARGB(255, 235, 232, 232),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: 100,
-                      width: 900,
-                      decoration: BoxDecoration(
-                        color: Colors.orangeAccent,
-                        border: Border.all(
-                          color: const Color.fromARGB(255, 235, 232, 232),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

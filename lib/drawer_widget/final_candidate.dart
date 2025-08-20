@@ -69,7 +69,7 @@ class FinalCandidateScreen extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 12),
+            // const SizedBox(height: 12),
             Wrap(
               spacing: 16,
               runSpacing: 16,
@@ -287,9 +287,10 @@ class SummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ColorScheme myColors = context.themeRef.colorScheme;
     return Container(
-      height: context.media.height * 0.20,
-      width: context.media.width * 0.20,
+      height: context.media.height * 0.15,
+      width: context.media.width * 0.15,
       decoration: BoxDecoration(
         color: color.withOpacity(0.9),
         borderRadius: BorderRadius.circular(16),
@@ -300,8 +301,8 @@ class SummaryCard extends StatelessWidget {
         children: [
           Text(
             title,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: myColors.surface,
               fontSize: 16,
               fontWeight: FontWeight.bold,
             ),
@@ -309,15 +310,15 @@ class SummaryCard extends StatelessWidget {
           const Spacer(),
           Text(
             count,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: myColors.surfaceContainer,
               fontSize: 22,
               fontWeight: FontWeight.bold,
             ),
           ),
           Text(
             "Monthly increase ($percent)",
-            style: const TextStyle(color: Colors.white),
+            style: TextStyle(color: myColors.surfaceContainer),
           ),
         ],
       ),

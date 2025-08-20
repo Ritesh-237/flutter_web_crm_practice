@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:practice_app/drawer_widget/dashboard.dart';
-import 'package:practice_app/drawer_widget/final_candidate.dart';
-import 'package:practice_app/drawer_widget/leads.dart';
+import 'package:practice_app/auth/logout_timer_provider.dart';
 import 'package:practice_app/test.dart';
-import 'package:practice_app/utils/extensions.dart';
 import 'package:practice_app/theme/theme_provider.dart';
+import 'package:practice_app/utils/extensions.dart';
 import 'package:provider/provider.dart';
-
-import '../auth/logout_timer_provider.dart';
+import '../auth/user_manager.dart';
+import 'menu_config.dart';
+import 'menu_item.dart';
+import 'sidebar.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -18,20 +18,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int selectedIndex = 0;
+  bool isSidebarExpanded = true;
 
-  List<String> drawerContentWeb = [
-    "DASHBOARD",
-    "LEADS",
-    "OPPORTUNITY LEADS",
-    "CANDIDATES",
-    "FINAL CANDIDATE",
-    "CUSTOMERS",
-    "PAYMENT LINKS",
-    "NEW VACANCY",
-    "REPLACEMENTS",
-    "TASKS",
-    "DISPUTE",
-  ];
+  late final List<MenuItemModel> menuItems;
   String _format(Duration d) {
     String twoDigits(int n) => n.toString().padLeft(2, "0");
     final hours = twoDigits(d.inHours);
@@ -41,22 +30,41 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    final userManager = UserManager();
+    menuItems =
+        userManager.isCustomer()
+            ? MenuConfig.getCustomerMenu()
+            : MenuConfig.getAdminMenu();
+  }
+
+  @override
   Widget build(BuildContext context) {
     ColorScheme myColors = context.themeRef.colorScheme;
     final screenWidth = context.media.width;
     final isWeb = screenWidth > 600;
     final isDark = Provider.of<ThemeProvider>(context).isDarkMode(context);
-
     return Scaffold(
-      backgroundColor: myColors.surfaceContainerLow,
-      drawer: isWeb ? null : const Drawer(),
       appBar: AppBar(
-        elevation: 4,
-        backgroundColor: myColors.primaryContainer,
+        elevation: 10,
+        // backgroundColor: myColors.primaryContainer,
+        backgroundColor: myColors.inversePrimary,
         title:
             isWeb
                 ? Row(
                   children: [
+                    IconButton(
+                      icon: Icon(
+                        isSidebarExpanded ? Icons.arrow_back : Icons.menu,
+                      ),
+                      onPressed: () {
+                        setState(() => isSidebarExpanded = !isSidebarExpanded);
+                      },
+                    ),
+
+                    const SizedBox(width: 50),
+
                     GestureDetector(
                       onTap:
                           () => Navigator.push(
@@ -65,18 +73,8 @@ class _MyHomePageState extends State<MyHomePage> {
                               builder: (context) => const Test(),
                             ),
                           ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.asset(
-                          "lib/assets/testjdj.png",
-                          height: 50,
-                          width: 50,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
+                      child: const Text("PRACTICE APP CRM"),
                     ),
-                    const SizedBox(width: 50),
-                    const Text("PRACTICE APP CRM"),
                   ],
                 )
                 : SizedBox(
@@ -137,93 +135,35 @@ class _MyHomePageState extends State<MyHomePage> {
           const SizedBox(width: 20),
         ],
       ),
+      drawer:
+          isWeb
+              ? null
+              : Drawer(
+                child: Sidebar(
+                  myColors: myColors,
+                  items: menuItems,
+                  selectedIndex: selectedIndex,
+                  isExpanded: true,
+                  onItemSelected: (i) {
+                    setState(() => selectedIndex = i);
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
       body: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Material(
-            elevation: 4,
-
-            child: Container(
-              width: screenWidth * 0.10,
-              height: context.media.height,
-              color: const Color.fromARGB(255, 233, 241, 255),
-              child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                physics: const AlwaysScrollableScrollPhysics(),
-                itemCount: drawerContentWeb.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        selectedIndex = index;
-                      });
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.only(top: 8),
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 15,
-                        horizontal: 10,
-                      ),
-                      decoration: BoxDecoration(
-                        color:
-                            selectedIndex == index
-                                ? myColors.tertiaryContainer
-                                : Colors.transparent,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              drawerContentWeb[index],
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xFF5C5C5C),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
+          if (isWeb)
+            Sidebar(
+              items: menuItems,
+              selectedIndex: selectedIndex,
+              isExpanded: isSidebarExpanded,
+              myColors: myColors,
+              onItemSelected: (i) => setState(() => selectedIndex = i),
             ),
-          ),
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Builder(
-                builder: (context) {
-                  switch (selectedIndex) {
-                    case 0:
-                      return DashboardScreen();
-                    case 1:
-                      return LeadScreen();
-                    case 2:
-                      return const Text("Opportunity Leads");
-                    case 3:
-                      return const Text("Candidates");
-                    case 4:
-                      return FinalCandidateScreen();
-                    case 5:
-                      return const Text("Customers");
-                    case 6:
-                      return const Text("Payment Link");
-                    case 7:
-                      return const Text("New Vacancy");
-                    case 8:
-                      return const Text("Replacements");
-                    case 9:
-                      return const Text("Tasks");
-                    case 10:
-                      return const Text("Dispute");
-                    default:
-                      return const Text("Unknown Page");
-                  }
-                },
-              ),
+            child: IndexedStack(
+              index: selectedIndex,
+              children: menuItems.map((e) => e.page).toList(),
             ),
           ),
         ],
