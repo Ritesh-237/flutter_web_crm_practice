@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:practice_app/auth/logout_timer_provider.dart';
+import 'package:practice_app/drawer_widget/user_details.dart';
 import 'package:practice_app/test.dart';
 import 'package:practice_app/theme/theme_provider.dart';
 import 'package:practice_app/utils/extensions.dart';
@@ -50,6 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
         elevation: 10,
         // backgroundColor: myColors.primaryContainer,
         backgroundColor: myColors.inversePrimary,
+
         title:
             isWeb
                 ? Row(
@@ -87,6 +89,30 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
         actions: [
+          if (isWeb)
+            SizedBox(
+              height: 40,
+              width: screenWidth * 0.2,
+              child: SearchBar(
+                elevation: WidgetStateProperty.all(0),
+                hintText: "Search lead...",
+                hintStyle: WidgetStateProperty.all(
+                  TextStyle(fontSize: 12, color: myColors.outline),
+                ),
+                backgroundColor: WidgetStateProperty.all(
+                  myColors.surfaceContainerLow,
+                ),
+                shape: WidgetStatePropertyAll(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadiusGeometry.circular(10),
+                  ),
+                ),
+                trailing: [
+                  IconButton(onPressed: () {}, icon: Icon(Icons.search)),
+                ],
+              ),
+            ),
+          SizedBox(width: 10),
           Center(
             child: Consumer<LogoutTimerProvider>(
               builder: (context, countdown, child) {
@@ -100,18 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
           ),
-          if (isWeb)
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-              child: SizedBox(
-                width: 300,
-                child: SearchBar(
-                  trailing: [Icon(Icons.search)],
-                  hintText: "Search lead",
-                  elevation: WidgetStateProperty.all(0),
-                ),
-              ),
-            ),
+          SizedBox(width: 10),
           IconButton(
             onPressed: () {
               Provider.of<ThemeProvider>(
@@ -121,18 +136,6 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             icon: Icon(isDark ? Icons.wb_sunny_outlined : Icons.sunny),
           ),
-          const SizedBox(width: 10),
-          const Text("User Profile"),
-          const SizedBox(width: 10),
-          ClipOval(
-            child: Image.asset(
-              "lib/assets/testjdj.png",
-              height: 45,
-              width: 45,
-              fit: BoxFit.fill,
-            ),
-          ),
-          const SizedBox(width: 20),
         ],
       ),
       drawer:
@@ -163,7 +166,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Expanded(
             child: IndexedStack(
               index: selectedIndex,
-              children: menuItems.map((e) => e.page).toList(),
+              children: [...menuItems.map((e) => e.page), UserDetailsPage()],
             ),
           ),
         ],

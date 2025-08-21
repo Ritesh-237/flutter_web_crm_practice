@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:practice_app/drawer_widget/jobleft_cand.dart';
+import 'package:practice_app/drawer_widget/working_cand.dart';
+import '../drawer_widget/available_cand.dart';
 import 'menu_item.dart';
 import '../drawer_widget/dashboard.dart';
 import '../drawer_widget/leads.dart';
@@ -15,7 +18,7 @@ class MenuConfig {
     MenuItemModel(
       title: "Opportunity Leads",
       icon: Icons.trending_up,
-      page: const Text("Opportunity Leads"),
+      page: LeadScreen(),
     ),
     MenuItemModel(
       title: "Candidates",
@@ -64,17 +67,17 @@ class MenuConfig {
     MenuItemModel(
       title: "Available Candidates",
       icon: Icons.people_alt,
-      page: const Text("Available Candidates"),
+      page: AvailableCandidates(),
     ),
     MenuItemModel(
       title: "Working Candidates",
       icon: Icons.work,
-      page: const Text("Working Candidates"),
+      page: WorkingCandidates(),
     ),
     MenuItemModel(
       title: "Job Left Maids",
       icon: Icons.exit_to_app,
-      page: const Text("Job Left Maids"),
+      page: JobleftCandidates(),
     ),
     MenuItemModel(
       title: "Replacements",

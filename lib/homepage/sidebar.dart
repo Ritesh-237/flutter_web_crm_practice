@@ -37,7 +37,7 @@ class Sidebar extends StatelessWidget {
               final item = items[index];
               final isSelected = selectedIndex == index;
 
-              return InkWell(
+              return GestureDetector(
                 onTap: () => onItemSelected(index),
                 child: Container(
                   margin: const EdgeInsets.symmetric(
@@ -75,42 +75,53 @@ class Sidebar extends StatelessWidget {
             },
           ),
           Spacer(),
-          isExpanded
-              ? Container(
-                margin: const EdgeInsets.all(5),
-                padding: EdgeInsets.all(2),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: myColors.onPrimary,
-                ),
-                child: ListTile(
-                  leading: ClipOval(
-                    child: Image.asset(
-                      "lib/assets/testjdj.png",
-                      height: 35,
-                      width: 35,
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                  title: const Text(
-                    "User Profile",
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  trailing: Icon(Icons.arrow_forward_ios_rounded, size: 20),
-                ),
-              )
-              : Padding(
-                padding: const EdgeInsets.only(bottom: 15),
-                child: ClipOval(
-                  child: Image.asset(
-                    "lib/assets/testjdj.png",
-                    height: 35,
-                    width: 35,
-                    fit: BoxFit.fill,
-                  ),
-                ),
+          GestureDetector(
+            onTap: () {
+              onItemSelected(
+                items.length,
+              ); // UserDetailsPage is at the last index
+            },
+            child: Container(
+              margin: const EdgeInsets.all(5),
+              padding: EdgeInsets.all(2),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: myColors.onPrimary,
               ),
+              child:
+                  isExpanded
+                      ? ListTile(
+                        leading: ClipOval(
+                          child: Image.asset(
+                            "lib/assets/man.png",
+                            height: 35,
+                            width: 35,
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                        title: const Text(
+                          "User Profile",
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        trailing: Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          size: 20,
+                        ),
+                      )
+                      : Padding(
+                        padding: const EdgeInsets.only(bottom: 15),
+                        child: ClipOval(
+                          child: Image.asset(
+                            "lib/assets/man.png",
+                            height: 35,
+                            width: 35,
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      ),
+            ),
+          ),
         ],
       ),
     );

@@ -70,7 +70,7 @@ class FinalCandidateScreen extends StatelessWidget {
             ),
 
             // const SizedBox(height: 12),
-            Wrap(
+            /*  Wrap(
               spacing: 16,
               runSpacing: 16,
               children: [
@@ -112,8 +112,7 @@ class FinalCandidateScreen extends StatelessWidget {
                   color: Colors.orangeAccent,
                 ),
               ],
-            ),
-
+            ),*/
             const SizedBox(height: 24),
             const Text(
               "ASSIGN CANDIDATE FOR CUSTOMER REPORT",
@@ -266,61 +265,6 @@ class FinalCandidateScreen extends StatelessWidget {
           isDense: true,
         ),
         readOnly: true,
-      ),
-    );
-  }
-}
-
-class SummaryCard extends StatelessWidget {
-  final String title;
-  final String count;
-  final String percent;
-  final Color color;
-
-  const SummaryCard({
-    super.key,
-    required this.title,
-    required this.count,
-    required this.percent,
-    required this.color,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    ColorScheme myColors = context.themeRef.colorScheme;
-    return Container(
-      height: context.media.height * 0.15,
-      width: context.media.width * 0.15,
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.9),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: TextStyle(
-              color: myColors.surface,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const Spacer(),
-          Text(
-            count,
-            style: TextStyle(
-              color: myColors.surfaceContainer,
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            "Monthly increase ($percent)",
-            style: TextStyle(color: myColors.surfaceContainer),
-          ),
-        ],
       ),
     );
   }
