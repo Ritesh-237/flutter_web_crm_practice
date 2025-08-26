@@ -73,6 +73,7 @@ class _MyAppState extends State<MyApp> {
       // darkTheme: MaterialTheme(textTheme).darkMediumContrast(),
       themeMode: themeProvider.themeMode,
       initialRoute: '/',
+      // initialRoute: '/login',
       // initialRoute: isLogin ? '/' : '/login',
       builder: EasyLoading.init(),
       routes: {

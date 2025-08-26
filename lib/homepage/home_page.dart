@@ -35,9 +35,19 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     final userManager = UserManager();
     menuItems =
-        userManager.isCustomer()
+        userManager.isAdmin()
+            ? MenuConfig.getAdminMenu()
+            : userManager.isCustomerDepartment()
             ? MenuConfig.getCustomerMenu()
-            : MenuConfig.getAdminMenu();
+            : userManager.isMaidDepartment()
+            ? MenuConfig.getCandidatesMenu()
+            : [
+              MenuItemModel(
+                title: "Something wrong",
+                icon: Icons.work,
+                page: const Text("Something wrong, Please Login again!"),
+              ),
+            ];
   }
 
   @override
@@ -48,6 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final isDark = Provider.of<ThemeProvider>(context).isDarkMode(context);
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         elevation: 10,
         // backgroundColor: myColors.primaryContainer,
         backgroundColor: myColors.inversePrimary,

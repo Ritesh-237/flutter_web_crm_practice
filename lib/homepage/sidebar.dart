@@ -30,51 +30,55 @@ class Sidebar extends StatelessWidget {
       ),
       child: Column(
         children: [
-          ListView.builder(
-            shrinkWrap: true,
-            itemCount: items.length,
-            itemBuilder: (context, index) {
-              final item = items[index];
-              final isSelected = selectedIndex == index;
+          Expanded(
+            // flex: 6 ,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: items.length,
+              itemBuilder: (context, index) {
+                final item = items[index];
+                final isSelected = selectedIndex == index;
 
-              return GestureDetector(
-                onTap: () => onItemSelected(index),
-                child: Container(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: isSelected ? myColors.onPrimary : Colors.transparent,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: Icon(
-                          item.icon,
-                          color: isSelected ? Colors.blue : myColors.outline,
-                        ),
-                      ),
-                      if (isExpanded)
-                        Expanded(
-                          child: Text(
-                            item.title,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color:
-                                  isSelected ? Colors.blue : myColors.outline,
-                            ),
+                return GestureDetector(
+                  onTap: () => onItemSelected(index),
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color:
+                          isSelected ? myColors.onPrimary : Colors.transparent,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Icon(
+                            item.icon,
+                            color: isSelected ? Colors.blue : myColors.outline,
                           ),
                         ),
-                    ],
+                        if (isExpanded)
+                          Expanded(
+                            child: Text(
+                              item.title,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color:
+                                    isSelected ? Colors.blue : myColors.outline,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
-          Spacer(),
+          // Spacer(),
           GestureDetector(
             onTap: () {
               onItemSelected(

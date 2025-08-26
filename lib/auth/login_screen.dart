@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:practice_app/auth/user_manager.dart';
 import 'package:practice_app/utils/extensions.dart';
 import 'package:provider/provider.dart';
 
 import '../homepage/home_page.dart';
+import '../models/user_model.dart';
 import '../utils/shared_preferences.dart';
 import 'logout_timer_provider.dart';
 
@@ -167,6 +169,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               // emailPasswordSignIn();
                               try {
                                 LocalStoragePref().setLoginBool(true);
+                                UserManager().setUser(
+                                  UserModel(id: 1, name: 'Anil', role: 'admin'),
+                                );
                               } catch (e) {}
                               Navigator.push(
                                 context,

@@ -8,25 +8,19 @@ import '../drawer_widget/leads.dart';
 import '../drawer_widget/final_candidate.dart';
 
 class MenuConfig {
-  static List<MenuItemModel> getCustomerMenu() => [
+  static List<MenuItemModel> commonMenu() => [
     MenuItemModel(
       title: "Dashboard",
       icon: Icons.dashboard,
       page: DashboardScreen(),
     ),
-    MenuItemModel(title: "Leads", icon: Icons.people, page: LeadScreen()),
     MenuItemModel(
-      title: "Opportunity Leads",
-      icon: Icons.trending_up,
-      page: LeadScreen(),
-    ),
-    MenuItemModel(
-      title: "Candidates",
+      title: "Available Candidates",
       icon: Icons.work,
       page: const Text("Candidates"),
     ),
     MenuItemModel(
-      title: "Final Candidate",
+      title: "Working Candidate",
       icon: Icons.check_circle,
       page: FinalCandidateScreen(),
     ),
@@ -34,6 +28,21 @@ class MenuConfig {
       title: "Customers",
       icon: Icons.person,
       page: const Text("Customers"),
+    ),
+    MenuItemModel(
+      title: "Dispute",
+      icon: Icons.warning,
+      page: const Text("Dispute"),
+    ),
+    MenuItemModel(title: "Tasks", icon: Icons.task, page: const Text("Tasks")),
+  ];
+
+  static List<MenuItemModel> customerMenu() => [
+    MenuItemModel(title: "Leads", icon: Icons.people, page: LeadScreen()),
+    MenuItemModel(
+      title: "Opportunity Leads",
+      icon: Icons.trending_up,
+      page: LeadScreen(),
     ),
     MenuItemModel(
       title: "Payment Links",
@@ -51,29 +60,9 @@ class MenuConfig {
       page: const Text("Replacements"),
     ),
     MenuItemModel(title: "Tasks", icon: Icons.task, page: const Text("Tasks")),
-    MenuItemModel(
-      title: "Dispute",
-      icon: Icons.warning,
-      page: const Text("Dispute"),
-    ),
   ];
 
-  static List<MenuItemModel> getAdminMenu() => [
-    MenuItemModel(
-      title: "Dashboard",
-      icon: Icons.dashboard,
-      page: DashboardScreen(),
-    ),
-    MenuItemModel(
-      title: "Available Candidates",
-      icon: Icons.people_alt,
-      page: AvailableCandidates(),
-    ),
-    MenuItemModel(
-      title: "Working Candidates",
-      icon: Icons.work,
-      page: WorkingCandidates(),
-    ),
+  static List<MenuItemModel> candidatesMenu() => [
     MenuItemModel(
       title: "Job Left Maids",
       icon: Icons.exit_to_app,
@@ -84,11 +73,13 @@ class MenuConfig {
       icon: Icons.group_remove,
       page: const Text("Replacement Needed Customers"),
     ),
-    MenuItemModel(title: "Tasks", icon: Icons.task, page: const Text("Tasks")),
-    MenuItemModel(
-      title: "Dispute",
-      icon: Icons.warning_amber_rounded,
-      page: const Text("Dispute"),
-    ),
   ];
+
+  static List<MenuItemModel> getAdminMenu() =>
+      commonMenu() + customerMenu() + candidatesMenu();
+
+  static List<MenuItemModel> getCustomerMenu() => commonMenu() + customerMenu();
+
+  static List<MenuItemModel> getCandidatesMenu() =>
+      commonMenu() + candidatesMenu();
 }

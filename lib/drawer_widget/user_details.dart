@@ -3,6 +3,7 @@ import 'package:practice_app/utils/extensions.dart';
 import 'package:provider/provider.dart';
 
 import '../theme/theme_provider.dart';
+import '../utils/shared_preferences.dart';
 
 // Assume ThemeProvider and extensions are defined elsewhere
 class UserDetailsPage extends StatelessWidget {
@@ -144,6 +145,7 @@ class UserDetailsPage extends StatelessWidget {
 
   void _logoutUser(BuildContext context) {
     // Replace this with your logout logic (e.g., AuthProvider logout)
+    LocalStoragePref().setLoginBool(false);
     Navigator.of(context).pushReplacementNamed('/login');
   }
 }

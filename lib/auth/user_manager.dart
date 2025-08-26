@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import '../models/user_model.dart';
 import '../utils/shared_preferences.dart';
 
@@ -10,6 +12,7 @@ class UserManager {
 
   Future<void> init() async {
     _currentUser = LocalStoragePref().getUserModel();
+    log("init ${_currentUser}");
   }
 
   Future<void> setUser(UserModel user) async {
@@ -25,6 +28,6 @@ class UserManager {
   }
 
   bool isAdmin() => _currentUser?.role == "admin";
-  bool isMaid() => _currentUser?.role == "candidate";
-  bool isCustomer() => _currentUser?.role == "customer";
+  bool isMaidDepartment() => _currentUser?.role == "candidate";
+  bool isCustomerDepartment() => _currentUser?.role == "customer";
 }
