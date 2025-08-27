@@ -17,12 +17,12 @@ class MenuConfig {
     MenuItemModel(
       title: "Available Candidates",
       icon: Icons.work,
-      page: const Text("Candidates"),
+      page: AvailableCandidates(),
     ),
     MenuItemModel(
       title: "Working Candidate",
       icon: Icons.check_circle,
-      page: FinalCandidateScreen(),
+      page: WorkingCandidates(),
     ),
     MenuItemModel(
       title: "Customers",
@@ -32,7 +32,7 @@ class MenuConfig {
     MenuItemModel(
       title: "Dispute",
       icon: Icons.warning,
-      page: const Text("Dispute"),
+      page: FinalCandidateScreen(),
     ),
     MenuItemModel(title: "Tasks", icon: Icons.task, page: const Text("Tasks")),
   ];

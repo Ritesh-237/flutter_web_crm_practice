@@ -44,8 +44,10 @@ class _MyHomePageState extends State<MyHomePage> {
             : [
               MenuItemModel(
                 title: "Something wrong",
-                icon: Icons.work,
-                page: const Text("Something wrong, Please Login again!"),
+                icon: Icons.error_outline,
+                page: Center(
+                  child: const Text("Something wrong, Please Login again!"),
+                ),
               ),
             ];
   }

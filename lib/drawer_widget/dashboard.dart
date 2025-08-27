@@ -24,6 +24,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     ColorScheme myColors = context.themeRef.colorScheme;
 
     return Container(
+      width: screenWidth,
       padding: EdgeInsets.all(10),
       margin: EdgeInsets.all(10),
       decoration: BoxDecoration(
@@ -39,7 +40,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             // Row(children: []),
             Container(
               // height: context.media.wi * 0.15,
-              // width: screenWidth,
+              width: screenWidth,
               padding: EdgeInsets.all(15),
               margin: EdgeInsets.all(5),
               decoration: BoxDecoration(
@@ -55,8 +56,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ],
               ),
               child: Wrap(
-                spacing: 16,
-                runSpacing: 16,
+                spacing: 8,
+                runSpacing: 8,
                 children: [
                   SummaryCard(
                     title: "Available Candidates",
