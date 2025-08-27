@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:practice_app/homepage/drawer_widget/dashboard.dart';
-import 'package:practice_app/homepage/drawer_widget/final_candidate.dart';
-import 'package:practice_app/homepage/drawer_widget/leads.dart';
+import 'package:practice_app/auth/logout_timer_provider.dart';
+import 'package:practice_app/drawer_widget/user_details.dart';
 import 'package:practice_app/test.dart';
 import 'package:practice_app/theme/theme_provider.dart';
+import 'package:practice_app/utils/extensions.dart';
 import 'package:provider/provider.dart';
+import '../auth/user_manager.dart';
+import 'menu_config.dart';
+import 'menu_item.dart';
+import 'sidebar.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -15,38 +19,67 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int selectedIndex = 0;
+  bool isSidebarExpanded = true;
 
-  List<String> drawerContentWeb = [
-    "DASHBOARD",
-    "LEADS",
-    "OPPORTUNITY LEADS",
-    "CANDIDATES",
-    "FINAL CANDIDATE",
-    "CUSTOMERS",
-    "PAYMENT LINKS",
-    "NEW VACANCY",
-    "REPLACEMENTS",
-    "TASKS",
-    "DISPUTE",
-  ];
+  late final List<MenuItemModel> menuItems;
+  String _format(Duration d) {
+    String twoDigits(int n) => n.toString().padLeft(2, "0");
+    final hours = twoDigits(d.inHours);
+    final minutes = twoDigits(d.inMinutes.remainder(60));
+    final seconds = twoDigits(d.inSeconds.remainder(60));
+    return "$hours:$minutes:$seconds";
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    final userManager = UserManager();
+    menuItems =
+        userManager.isAdmin()
+            ? MenuConfig.getAdminMenu()
+            : userManager.isCustomerDepartment()
+            ? MenuConfig.getCustomerMenu()
+            : userManager.isMaidDepartment()
+            ? MenuConfig.getCandidatesMenu()
+            : [
+              MenuItemModel(
+                title: "Something wrong",
+                icon: Icons.error_outline,
+                page: Center(
+                  child: const Text("Something wrong, Please Login again!"),
+                ),
+              ),
+            ];
+  }
 
   @override
   Widget build(BuildContext context) {
-    ColorScheme myColors = Theme.of(context).colorScheme;
-    final screenWidth = MediaQuery.of(context).size.width;
+    ColorScheme myColors = context.themeRef.colorScheme;
+    final screenWidth = context.media.width;
     final isWeb = screenWidth > 600;
     final isDark = Provider.of<ThemeProvider>(context).isDarkMode(context);
-
     return Scaffold(
-      backgroundColor: myColors.surfaceContainerLow,
-      drawer: isWeb ? null : const Drawer(),
       appBar: AppBar(
-        elevation: 4,
-        backgroundColor: myColors.primaryContainer,
+        automaticallyImplyLeading: false,
+        elevation: 10,
+        // backgroundColor: myColors.primaryContainer,
+        backgroundColor: myColors.inversePrimary,
+
         title:
             isWeb
                 ? Row(
                   children: [
+                    IconButton(
+                      icon: Icon(
+                        isSidebarExpanded ? Icons.arrow_back : Icons.menu,
+                      ),
+                      onPressed: () {
+                        setState(() => isSidebarExpanded = !isSidebarExpanded);
+                      },
+                    ),
+
+                    const SizedBox(width: 50),
+
                     GestureDetector(
                       onTap:
                           () => Navigator.push(
@@ -55,23 +88,13 @@ class _MyHomePageState extends State<MyHomePage> {
                               builder: (context) => const Test(),
                             ),
                           ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.asset(
-                          "lib/assets/testjdj.png",
-                          height: 50,
-                          width: 50,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
+                      child: const Text("PRACTICE APP CRM"),
                     ),
-                    const SizedBox(width: 50),
-                    const Text("PRACTICE APP CRM"),
                   ],
                 )
                 : SizedBox(
                   width: screenWidth * 0.50,
-                  height: MediaQuery.of(context).size.height * 0.045,
+                  height: context.media.height * 0.045,
                   child: SearchBar(
                     trailing: [Icon(Icons.search)],
                     hintText: "Search lead",
@@ -80,17 +103,43 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
         actions: [
           if (isWeb)
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-              child: SizedBox(
-                width: 300,
-                child: SearchBar(
-                  trailing: [Icon(Icons.search)],
-                  hintText: "Search lead",
-                  elevation: WidgetStateProperty.all(0),
+            SizedBox(
+              height: 40,
+              width: screenWidth * 0.2,
+              child: SearchBar(
+                elevation: WidgetStateProperty.all(0),
+                hintText: "Search lead...",
+                hintStyle: WidgetStateProperty.all(
+                  TextStyle(fontSize: 12, color: myColors.outline),
                 ),
+                backgroundColor: WidgetStateProperty.all(
+                  myColors.surfaceContainerLow,
+                ),
+                shape: WidgetStatePropertyAll(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadiusGeometry.circular(10),
+                  ),
+                ),
+                trailing: [
+                  IconButton(onPressed: () {}, icon: Icon(Icons.search)),
+                ],
               ),
             ),
+          SizedBox(width: 10),
+          Center(
+            child: Consumer<LogoutTimerProvider>(
+              builder: (context, countdown, child) {
+                return Text(
+                  "Session ends in: ${_format(countdown.remaining)}",
+                  style: const TextStyle(
+                    // fontSize: 20,
+                    // fontWeight: FontWeight.bold,
+                  ),
+                );
+              },
+            ),
+          ),
+          SizedBox(width: 10),
           IconButton(
             onPressed: () {
               Provider.of<ThemeProvider>(
@@ -100,107 +149,37 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             icon: Icon(isDark ? Icons.wb_sunny_outlined : Icons.sunny),
           ),
-          const SizedBox(width: 10),
-          const Text("User Profile"),
-          const SizedBox(width: 10),
-          ClipOval(
-            child: Image.asset(
-              "lib/assets/testjdj.png",
-              height: 45,
-              width: 45,
-              fit: BoxFit.fill,
-            ),
-          ),
-          const SizedBox(width: 20),
         ],
       ),
+      drawer:
+          isWeb
+              ? null
+              : Drawer(
+                child: Sidebar(
+                  myColors: myColors,
+                  items: menuItems,
+                  selectedIndex: selectedIndex,
+                  isExpanded: true,
+                  onItemSelected: (i) {
+                    setState(() => selectedIndex = i);
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
       body: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Material(
-            elevation: 4,
-
-            child: Container(
-              width: screenWidth * 0.10,
-              height: MediaQuery.of(context).size.height,
-              color: const Color.fromARGB(255, 233, 241, 255),
-              child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                physics: const AlwaysScrollableScrollPhysics(),
-                itemCount: drawerContentWeb.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        selectedIndex = index;
-                      });
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.only(top: 8),
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 15,
-                        horizontal: 10,
-                      ),
-                      decoration: BoxDecoration(
-                        color:
-                            selectedIndex == index
-                                ? myColors.tertiaryContainer
-                                : Colors.transparent,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              drawerContentWeb[index],
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xFF5C5C5C),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
+          if (isWeb)
+            Sidebar(
+              items: menuItems,
+              selectedIndex: selectedIndex,
+              isExpanded: isSidebarExpanded,
+              myColors: myColors,
+              onItemSelected: (i) => setState(() => selectedIndex = i),
             ),
-          ),
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Builder(
-                builder: (context) {
-                  switch (selectedIndex) {
-                    case 0:
-                      return DashboardScreen();
-                    case 1:
-                      return LeadScreen();
-                    case 2:
-                      return const Text("Opportunity Leads");
-                    case 3:
-                      return const Text("Candidates");
-                    case 4:
-                      return FinalCandidateScreen();
-                    case 5:
-                      return const Text("Customers");
-                    case 6:
-                      return const Text("Payment Link");
-                    case 7:
-                      return const Text("New Vacancy");
-                    case 8:
-                      return const Text("Replacements");
-                    case 9:
-                      return const Text("Tasks");
-                    case 10:
-                      return const Text("Dispute");
-                    default:
-                      return const Text("Unknown Page");
-                  }
-                },
-              ),
+            child: IndexedStack(
+              index: selectedIndex,
+              children: [...menuItems.map((e) => e.page), UserDetailsPage()],
             ),
           ),
         ],

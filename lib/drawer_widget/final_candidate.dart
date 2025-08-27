@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:practice_app/theme/theme_extension.dart';
+import 'package:practice_app/utils/extensions.dart';
 
 class FinalCandidateScreen extends StatelessWidget {
   const FinalCandidateScreen({super.key});
@@ -69,8 +69,8 @@ class FinalCandidateScreen extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 12),
-            Wrap(
+            // const SizedBox(height: 12),
+            /*  Wrap(
               spacing: 16,
               runSpacing: 16,
               children: [
@@ -112,8 +112,7 @@ class FinalCandidateScreen extends StatelessWidget {
                   color: Colors.orangeAccent,
                 ),
               ],
-            ),
-
+            ),*/
             const SizedBox(height: 24),
             const Text(
               "ASSIGN CANDIDATE FOR CUSTOMER REPORT",
@@ -266,60 +265,6 @@ class FinalCandidateScreen extends StatelessWidget {
           isDense: true,
         ),
         readOnly: true,
-      ),
-    );
-  }
-}
-
-class SummaryCard extends StatelessWidget {
-  final String title;
-  final String count;
-  final String percent;
-  final Color color;
-
-  const SummaryCard({
-    super.key,
-    required this.title,
-    required this.count,
-    required this.percent,
-    required this.color,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.20,
-      width: MediaQuery.of(context).size.width * 0.20,
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.9),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const Spacer(),
-          Text(
-            count,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            "Monthly increase ($percent)",
-            style: const TextStyle(color: Colors.white),
-          ),
-        ],
       ),
     );
   }
